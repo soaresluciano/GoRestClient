@@ -14,14 +14,7 @@ namespace GoRestClient.Services
         /// </summary>
         /// <returns>List of users that match the search criteria.</returns>
         Task<IEnumerable<UserModel>> Search();
-
-        /// <summary>
-        /// Get the details of the user with the given id.
-        /// </summary>
-        /// <param name="id">Id of the user to be fetched.</param>
-        /// <returns>Register found with the given Id.</returns>
-        Task<UserModel> Get(uint id);
-
+        
         /// <summary>
         /// Create a new user.
         /// </summary>

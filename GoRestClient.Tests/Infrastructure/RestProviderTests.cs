@@ -13,13 +13,20 @@ namespace GoRestClient.Tests.Infrastructure
     [TestFixture]
     public class RestProviderTests
     {
-        private const string FakeUri = "http://xpto/";
+        private const string FakeResourceUrl = "FakeResource";
         private const int FakeContent = 1234;
 
         private RestProvider _unitUnderTest;
         private HttpClient _httpClient;
         private FakeHttpMessageHandler _fakeHttpHandler;
-        readonly Mock<IConfigurationProvider> _configurationProviderMock = new Mock<IConfigurationProvider>();
+        readonly Mock<IConfigurationProvider> _configurationProviderMock;
+
+        public RestProviderTests()
+        {
+            _configurationProviderMock = new Mock<IConfigurationProvider>();
+            _configurationProviderMock.SetupGet(m => m.ApiUrl).Returns("http://xpto/");
+            _configurationProviderMock.SetupGet(m => m.ApiToken).Returns("FakeToken");
+        }
 
         [SetUp]
         public void SetUp()
@@ -77,13 +84,13 @@ namespace GoRestClient.Tests.Infrastructure
             [Test]
             public async Task WhenParametersAreValid_ShouldUseTheGetAction()
             {
-                await WhenParametersAreValid_ShouldUseTheGetAction(() => _unitUnderTest.GetAsync<int>(FakeUri), HttpMethod.Get);
+                await WhenParametersAreValid_ShouldUseTheGetAction(() => _unitUnderTest.GetAsync<int>(FakeResourceUrl), HttpMethod.Get);
             }
 
             [Test]
             public async Task WhenStatusCodeIsOK_ShouldReturnExpectedContentBack()
             {
-                await WhenStatusCodeIsOK_ShouldReturnExpectedContentBack(() => _unitUnderTest.GetAsync<int>(FakeUri));
+                await WhenStatusCodeIsOK_ShouldReturnExpectedContentBack(() => _unitUnderTest.GetAsync<int>(FakeResourceUrl));
             }
         }
 
@@ -100,13 +107,13 @@ namespace GoRestClient.Tests.Infrastructure
             [Test]
             public async Task Always_ShouldUseTheGetAction()
             {
-                await WhenParametersAreValid_ShouldUseTheGetAction(() => _unitUnderTest.PostAsync<int, int>(FakeUri, FakeContent), HttpMethod.Post);
+                await WhenParametersAreValid_ShouldUseTheGetAction(() => _unitUnderTest.PostAsync<int, int>(FakeResourceUrl, FakeContent), HttpMethod.Post);
             }
 
             [Test]
             public async Task WhenStatusCodeIsOK_ShouldReturnExpectedContentBack()
             {
-                await WhenStatusCodeIsOK_ShouldReturnExpectedContentBack(() => _unitUnderTest.PostAsync<int, int>(FakeUri, FakeContent));
+                await WhenStatusCodeIsOK_ShouldReturnExpectedContentBack(() => _unitUnderTest.PostAsync<int, int>(FakeResourceUrl, FakeContent));
             }
         }
 
@@ -123,13 +130,13 @@ namespace GoRestClient.Tests.Infrastructure
             [Test]
             public async Task Always_ShouldUseTheGetAction()
             {
-                await WhenParametersAreValid_ShouldUseTheGetAction(() => _unitUnderTest.PatchAsync<int, int>(FakeUri, FakeContent), HttpMethod.Patch);
+                await WhenParametersAreValid_ShouldUseTheGetAction(() => _unitUnderTest.PatchAsync<int, int>(FakeResourceUrl, FakeContent), HttpMethod.Patch);
             }
 
             [Test]
             public async Task WhenStatusCodeIsOK_ShouldReturnExpectedContentBack()
             {
-                await WhenStatusCodeIsOK_ShouldReturnExpectedContentBack(() => _unitUnderTest.PatchAsync<int, int>(FakeUri, FakeContent));
+                await WhenStatusCodeIsOK_ShouldReturnExpectedContentBack(() => _unitUnderTest.PatchAsync<int, int>(FakeResourceUrl, FakeContent));
             }
         }
 
@@ -146,13 +153,13 @@ namespace GoRestClient.Tests.Infrastructure
             [Test]
             public async Task Always_ShouldUseTheGetAction()
             {
-                await WhenParametersAreValid_ShouldUseTheGetAction(() => _unitUnderTest.DeleteAsync<int>(FakeUri), HttpMethod.Delete);
+                await WhenParametersAreValid_ShouldUseTheGetAction(() => _unitUnderTest.DeleteAsync<int>(FakeResourceUrl), HttpMethod.Delete);
             }
 
             [Test]
             public async Task WhenStatusCodeIsOK_ShouldReturnExpectedContentBack()
             {
-                await WhenStatusCodeIsOK_ShouldReturnExpectedContentBack(() => _unitUnderTest.DeleteAsync<int>(FakeUri));
+                await WhenStatusCodeIsOK_ShouldReturnExpectedContentBack(() => _unitUnderTest.DeleteAsync<int>(FakeResourceUrl));
             }
         }
     }

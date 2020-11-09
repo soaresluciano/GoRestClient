@@ -12,17 +12,11 @@ namespace GoRestClient.Infrastructure
 
         public RestProvider(
             IConfigurationProvider configurationProvider,
-            HttpClient client = null)
+            HttpClient client)
         {
-            if (client == null)
-            {
-                _client = new HttpClient();
-                _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {configurationProvider.ApiToken}");
-            }
-            else
-            {
-                _client = client;
-            }
+            _client = client;
+            _client.BaseAddress = new Uri(configurationProvider.ApiUrl);
+            _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {configurationProvider.ApiToken}");
         }
 
         ///<inheritdoc/>
