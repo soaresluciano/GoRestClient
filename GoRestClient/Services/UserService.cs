@@ -1,4 +1,5 @@
-﻿using GoRestClient.Infrastructure;
+﻿using System;
+using GoRestClient.Infrastructure;
 using GoRestClient.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,10 +18,12 @@ namespace GoRestClient.Services
         }
 
         ///<inheritdoc/>
-        public async Task<IEnumerable<UserModel>> Search()
+        public async Task<IEnumerable<UserModel>> Search(string nameFilter)
         {
+            string parameters = !string.IsNullOrWhiteSpace(nameFilter) ? $"?name={nameFilter}" : String.Empty;
+            string url = $"{ApiResourceName}{parameters}";
             var searchResult = await
-                _restProvider.GetAsync<ResponseModel>(ApiResourceName);
+                _restProvider.GetAsync<ResponseModel>(url);
              return searchResult.Data.ToObject<IEnumerable<UserModel>>();
         }
 

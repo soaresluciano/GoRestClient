@@ -31,6 +31,8 @@ namespace GoRestClient.ViewModels
 
         public IEnumerable<Gender> GendersOptions => Enum.GetValues(typeof(Gender)).Cast<Gender>();
 
+        public string NameFilter { get; set; }
+
         public UserModel SelectedUser
         {
             get => _selectedUser;
@@ -52,7 +54,7 @@ namespace GoRestClient.ViewModels
 
         private async Task Search()
         {
-            var searchResult = await _userService.Search();
+            var searchResult = await _userService.Search(NameFilter);
             UsersCollection.Clear();
             UsersCollection.AddRange(searchResult);
         }

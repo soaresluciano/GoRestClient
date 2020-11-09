@@ -64,17 +64,24 @@
         </Grid>
 
         <DockPanel DockPanel.Dock="Left">
-            <StackPanel DockPanel.Dock="Bottom" >
-                <Button Content="Search" Command="{Binding SearchCommand}" />
+            <StackPanel DockPanel.Dock="Bottom">
                 <Button Content="Create new" Command="{Binding CreateNewCommand}" />
             </StackPanel>
 
-            <DataGrid DockPanel.Dock="Top"
-                      SelectionMode="Single"
-                      IsReadOnly="True" 
-                      ItemsSource ="{Binding UsersCollection}"
-                      SelectedItem="{Binding SelectedUser}"
-            />
+            <DockPanel DockPanel.Dock="Top">
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                    <Label Content="Filter by name:" />
+                    <TextBox Text="{Binding NameFilter}" MinWidth="200" />
+                    <Button Content="Search" Command="{Binding SearchCommand}" />
+                </StackPanel>
+                <DataGrid
+                          SelectionMode="Single"
+                          IsReadOnly="True" 
+                          ItemsSource ="{Binding UsersCollection}"
+                          SelectedItem="{Binding SelectedUser}"
+                />
+            </DockPanel>
+
         </DockPanel>
     </DockPanel>
 </Window>
