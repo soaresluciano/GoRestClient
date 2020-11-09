@@ -1,10 +1,10 @@
-using GoRestClient.Models.Enums;
-using GoRestClient.Views.Converters;
-using NUnit.Framework;
 using System;
 using System.Windows;
+using GoRestClient.Converters;
+using GoRestClient.Models.Enums;
+using NUnit.Framework;
 
-namespace GoRestClient.Tests.Views.Converters
+namespace GoRestClient.Tests.Converters
 {
     [TestFixture]
     public class StatusToBoolConverterTests

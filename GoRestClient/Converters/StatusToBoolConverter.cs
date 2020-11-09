@@ -1,10 +1,10 @@
-﻿using GoRestClient.Models.Enums;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using GoRestClient.Models.Enums;
 
-namespace GoRestClient.Views.Converters
+namespace GoRestClient.Converters
 {
     public class StatusToBoolConverter : IValueConverter
     {
