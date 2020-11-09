@@ -20,17 +20,16 @@ namespace GoRestClient.Services
         public async Task<IEnumerable<UserModel>> Search()
         {
             var searchResult = await
-                _restProvider.GetAsync<ResponseModel<IEnumerable<UserModel>>>(ApiResourceName);
-            return searchResult.Data;
+                _restProvider.GetAsync<ResponseModel>(ApiResourceName);
+             return searchResult.Data.ToObject<IEnumerable<UserModel>>();
         }
-
 
         ///<inheritdoc/>
         public async Task<UserModel> Create(UserModel userToBeCreated)
         {
             var response = await 
-                _restProvider.PostAsync<ResponseModel<UserModel>, UserModel>(ApiResourceName, userToBeCreated);
-            return response.Data;
+                _restProvider.PostAsync<ResponseModel, UserModel>(ApiResourceName, userToBeCreated);
+            return response.Data.ToObject<UserModel>();
         }
 
         ///<inheritdoc/>
@@ -38,15 +37,15 @@ namespace GoRestClient.Services
         {
             string url = $"{ApiResourceName}/{userToBeUpdated.Id}";
             var response = await
-                _restProvider.PatchAsync<ResponseModel<UserModel>, UserModel>(url, userToBeUpdated);
-            return response.Data;
+                _restProvider.PatchAsync<ResponseModel, UserModel>(url, userToBeUpdated);
+            return response.Data.ToObject<UserModel>();
         }
 
         ///<inheritdoc/>
         public async Task Delete(uint id)
         {
             string url = $"{ApiResourceName}/{id}";
-            await _restProvider.DeleteAsync<UserModel>(url);
+            await _restProvider.DeleteAsync<ResponseModel>(url);
         }
     }
 }

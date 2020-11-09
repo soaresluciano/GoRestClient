@@ -1,11 +1,11 @@
-﻿namespace GoRestClient.Models
+﻿using Newtonsoft.Json.Linq;
+
+namespace GoRestClient.Models
 {
-    public class ResponseModel<TMeta, TData>
+    public class ResponseModel
     {
         public uint Code { get; set; }
-        public TMeta Meta { get; set; }
-        public TData Data { get; set; }
+        public JToken Meta { get; set; }
+        public JToken Data { get; set; }
     }
-
-    public class ResponseModel<TData> : ResponseModel<dynamic, TData>{ }
 }
