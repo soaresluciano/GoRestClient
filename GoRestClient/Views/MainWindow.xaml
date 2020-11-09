@@ -29,6 +29,7 @@
                 <RowDefinition Height="25" />
                 <RowDefinition Height="25" />
                 <RowDefinition Height="25" />
+                <RowDefinition />
             </Grid.RowDefinitions>
             <Label Grid.ColumnSpan="2" Content="Employee Details"
             />
@@ -55,10 +56,18 @@
 
             <Label Grid.Column="0" Grid.Row="7" Content="Updated"/>
             <Label Grid.Column="1" Grid.Row="7" Content="{Binding SelectedUser.Updated}"/>
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="8">
+                <Button Content="Update" Command="{Binding UpdateCommand}" />
+                <Button Content="Delete" Command="{Binding DeleteCommand}" />
+                <Button Content="Insert" Command="{Binding InsertCommand}" />
+            </StackPanel>
         </Grid>
 
         <DockPanel DockPanel.Dock="Left">
-            <Button DockPanel.Dock="Bottom" Content="Search" Command="{Binding SearchCommand}" />
+            <StackPanel DockPanel.Dock="Bottom" >
+                <Button Content="Search" Command="{Binding SearchCommand}" />
+                <Button Content="Create new" Command="{Binding CreateNewCommand}" />
+            </StackPanel>
 
             <DataGrid DockPanel.Dock="Top"
                       SelectionMode="Single"

@@ -22,6 +22,11 @@ namespace GoRestClient.ViewModels
             _userService = userService;
             _usersCollection = new ObservableCollection<UserModel>();
             SearchCommand = new DelegateCommand(async () => await Search());
+            InsertCommand = new DelegateCommand(async () => await Insert());
+            UpdateCommand = new DelegateCommand(async () => await Update());
+            DeleteCommand = new DelegateCommand(async () => await Delete());
+            CreateNewCommand = new DelegateCommand(ClearSelectedUser);
+            ClearSelectedUser();
         }
 
         public IEnumerable<Gender> GendersOptions => Enum.GetValues(typeof(Gender)).Cast<Gender>();
@@ -39,11 +44,41 @@ namespace GoRestClient.ViewModels
         }
 
         public DelegateCommand SearchCommand { get; }
+        public DelegateCommand InsertCommand { get; }
+        public DelegateCommand UpdateCommand { get; }
+        public DelegateCommand DeleteCommand { get; }
+        public DelegateCommand CreateNewCommand { get; }
+
 
         private async Task Search()
         {
             var searchResult = await _userService.Search();
+            UsersCollection.Clear();
             UsersCollection.AddRange(searchResult);
+        }
+
+        private async Task Insert()
+        {
+            var newUser = await _userService.Create(SelectedUser);
+            UsersCollection.Add(newUser);
+            SelectedUser = newUser;
+        }
+
+        private async Task Update()
+        {
+            await _userService.Update(SelectedUser);
+        }
+
+        private async Task Delete()
+        {
+            await _userService.Delete(SelectedUser.Id);
+            UsersCollection.Remove(SelectedUser);
+            ClearSelectedUser();
+        }
+
+        private void ClearSelectedUser()
+        {
+            SelectedUser = new UserModel();
         }
     }
 }
