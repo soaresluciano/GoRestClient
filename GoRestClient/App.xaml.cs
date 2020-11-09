@@ -1,4 +1,5 @@
 ﻿using GoRestClient.Infrastructure;
+using GoRestClient.Services;
 using GoRestClient.Views;
 using Prism.Ioc;
 using Prism.Unity;
@@ -15,7 +16,8 @@ namespace GoRestClient
         {
             containerRegistry
                 .Register<IConfigurationProvider, ConfigurationProvider>()
-                .Register<IRestProvider, RestProvider>();
+                .Register<IRestProvider, RestProvider>()
+                .Register<IUserService, UserService>();
         }
 
         protected override Window CreateShell()

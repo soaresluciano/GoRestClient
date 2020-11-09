@@ -1,22 +1,27 @@
 ﻿using GoRestClient.Models;
 using GoRestClient.Models.Enums;
+using GoRestClient.Services;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GoRestClient.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
-        private UserModel _selectedUser = null;
-        private ObservableCollection<UserModel> _usersCollection = new ObservableCollection<UserModel>();
+        private readonly IUserService _userService;
+        private UserModel _selectedUser;
+        private ObservableCollection<UserModel> _usersCollection;
 
-        public MainWindowViewModel()
+        public MainWindowViewModel(IUserService userService)
         {
-            SearchCommand = new DelegateCommand(Search);
+            _userService = userService;
+            _usersCollection = new ObservableCollection<UserModel>();
+            SearchCommand = new DelegateCommand(async () => await Search());
         }
 
         public IEnumerable<Gender> GendersOptions => Enum.GetValues(typeof(Gender)).Cast<Gender>();
@@ -35,12 +40,10 @@ namespace GoRestClient.ViewModels
 
         public DelegateCommand SearchCommand { get; }
 
-        private void Search()
+        private async Task Search()
         {
-            UsersCollection.Add(new UserModel { Id = 1, Name = "Dummy 1", Email = "1@dummy.com", Gender= Gender.Female, Status = Status.Active, Created = DateTime.Now, Updated = DateTime.Now });
-            UsersCollection.Add(new UserModel { Id = 2, Name = "Dummy 2", Email = "2@dummy.com", Gender= Gender.Male, Status = Status.Inactive, Created = DateTime.Now, Updated = DateTime.Now });
-            UsersCollection.Add(new UserModel { Id = 3, Name = "Dummy 3", Email = "3@dummy.com", Gender= Gender.Female, Status = Status.Inactive, Created = DateTime.Now, Updated = DateTime.Now });
-            UsersCollection.Add(new UserModel { Id = 4, Name = "Dummy 4", Email = "4@dummy.com", Gender= Gender.Male, Status = Status.Active, Created = DateTime.Now, Updated = DateTime.Now });
+            var searchResult = await _userService.Search();
+            UsersCollection.AddRange(searchResult);
         }
     }
 }
