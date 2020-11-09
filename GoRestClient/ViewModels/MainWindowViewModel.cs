@@ -1,8 +1,11 @@
 ﻿using GoRestClient.Models;
+using GoRestClient.Models.Enums;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace GoRestClient.ViewModels
 {
@@ -15,6 +18,8 @@ namespace GoRestClient.ViewModels
         {
             SearchCommand = new DelegateCommand(Search);
         }
+
+        public IEnumerable<Gender> GendersOptions => Enum.GetValues(typeof(Gender)).Cast<Gender>();
 
         public UserModel SelectedUser
         {
@@ -32,10 +37,10 @@ namespace GoRestClient.ViewModels
 
         private void Search()
         {
-            UsersCollection.Add(new UserModel { Id = 1, Name = "Dummy 1", Email = "1@dummy.com", Gender= Gender.Female, Status = true, Created = DateTime.Now, Updated = DateTime.Now });
-            UsersCollection.Add(new UserModel { Id = 2, Name = "Dummy 2", Email = "2@dummy.com", Gender= Gender.Male, Status = false, Created = DateTime.Now, Updated = DateTime.Now });
-            UsersCollection.Add(new UserModel { Id = 3, Name = "Dummy 3", Email = "3@dummy.com", Gender= Gender.Female, Status = false, Created = DateTime.Now, Updated = DateTime.Now });
-            UsersCollection.Add(new UserModel { Id = 4, Name = "Dummy 4", Email = "4@dummy.com", Gender= Gender.Male, Status = true, Created = DateTime.Now, Updated = DateTime.Now });
+            UsersCollection.Add(new UserModel { Id = 1, Name = "Dummy 1", Email = "1@dummy.com", Gender= Gender.Female, Status = Status.Active, Created = DateTime.Now, Updated = DateTime.Now });
+            UsersCollection.Add(new UserModel { Id = 2, Name = "Dummy 2", Email = "2@dummy.com", Gender= Gender.Male, Status = Status.Inactive, Created = DateTime.Now, Updated = DateTime.Now });
+            UsersCollection.Add(new UserModel { Id = 3, Name = "Dummy 3", Email = "3@dummy.com", Gender= Gender.Female, Status = Status.Inactive, Created = DateTime.Now, Updated = DateTime.Now });
+            UsersCollection.Add(new UserModel { Id = 4, Name = "Dummy 4", Email = "4@dummy.com", Gender= Gender.Male, Status = Status.Active, Created = DateTime.Now, Updated = DateTime.Now });
         }
     }
 }
