@@ -18,13 +18,19 @@ namespace GoRestClient.Services
         }
 
         ///<inheritdoc/>
-        public async Task<IEnumerable<UserModel>> Search(string nameFilter)
+        public async Task<SearchResultModel> Search(string nameFilter)
         {
             string parameters = !string.IsNullOrWhiteSpace(nameFilter) ? $"?name={nameFilter}" : String.Empty;
             string url = $"{ApiResourceName}{parameters}";
-            var searchResult = await
+            var response = await
                 _restProvider.GetAsync<ResponseModel>(url);
-             return searchResult.Data.ToObject<IEnumerable<UserModel>>();
+            var searchResult = new SearchResultModel
+            {
+                Pagination = response.Meta.ToObject<SearchResultModel>().Pagination,
+                Records = response.Data.ToObject<IEnumerable<UserModel>>()
+            };
+
+            return searchResult;
         }
 
         ///<inheritdoc/>

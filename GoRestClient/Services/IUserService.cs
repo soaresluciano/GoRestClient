@@ -14,7 +14,7 @@ namespace GoRestClient.Services
         /// </summary>
         /// <param name="nameFilter">Search criteria for the field name.</param>
         /// <returns>List of users that match the search criteria.</returns>
-        Task<IEnumerable<UserModel>> Search(string nameFilter);
+        Task<SearchResultModel> Search(string nameFilter);
         
         /// <summary>
         /// Create a new user.

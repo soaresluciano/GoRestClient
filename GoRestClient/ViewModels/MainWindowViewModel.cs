@@ -16,6 +16,7 @@ namespace GoRestClient.ViewModels
         private readonly IUserService _userService;
         private UserModel _selectedUser;
         private ObservableCollection<UserModel> _usersCollection;
+        private PaginationModel _pagination;
 
         public MainWindowViewModel(IUserService userService)
         {
@@ -45,18 +46,24 @@ namespace GoRestClient.ViewModels
             set => SetProperty(ref _usersCollection, value);
         }
 
+        public PaginationModel Pagination
+        {
+            get => _pagination;
+            set => SetProperty(ref _pagination, value);
+        }
+
         public DelegateCommand SearchCommand { get; }
         public DelegateCommand InsertCommand { get; }
         public DelegateCommand UpdateCommand { get; }
         public DelegateCommand DeleteCommand { get; }
         public DelegateCommand CreateNewCommand { get; }
 
-
         private async Task Search()
         {
             var searchResult = await _userService.Search(NameFilter);
             UsersCollection.Clear();
-            UsersCollection.AddRange(searchResult);
+            UsersCollection.AddRange(searchResult.Records);
+            Pagination = searchResult.Pagination;
         }
 
         private async Task Insert()
