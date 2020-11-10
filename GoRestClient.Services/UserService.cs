@@ -1,5 +1,6 @@
 ﻿using GoRestClient.Core;
 using GoRestClient.Models;
+using GoRestClient.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\GoRestClient.Core\GoRestClient.Core.csproj" />
+    <ProjectReference Include="..\GoRestClient.Services\GoRestClient.Services.csproj" />
   </ItemGroup>
 
 </Project>

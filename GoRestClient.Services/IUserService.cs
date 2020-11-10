@@ -1,5 +1,5 @@
 ﻿using GoRestClient.Models;
-using System.Collections.Generic;
+using GoRestClient.Services.Models;
 using System.Threading.Tasks;
 
 namespace GoRestClient.Services

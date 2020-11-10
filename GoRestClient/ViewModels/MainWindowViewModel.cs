@@ -1,6 +1,7 @@
 ﻿using GoRestClient.Models;
-using GoRestClient.Models.Enums;
 using GoRestClient.Services;
+using GoRestClient.Services.Models;
+using GoRestClient.Services.Models.Enums;
 using Prism.Commands;
 using Prism.Mvvm;
 using System;

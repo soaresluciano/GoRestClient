@@ -1,4 +1,4 @@
-﻿namespace GoRestClient.Models
+﻿namespace GoRestClient.Services.Models
 {
     public class PaginationModel
     {

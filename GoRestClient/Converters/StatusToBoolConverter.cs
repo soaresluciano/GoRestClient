@@ -1,8 +1,8 @@
-﻿using System;
+﻿using GoRestClient.Services.Models.Enums;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using GoRestClient.Models.Enums;
 
 namespace GoRestClient.Converters
 {

@@ -1,6 +1,6 @@
-﻿using GoRestClient.Models.Enums;
-using System;
+﻿using GoRestClient.Services.Models.Enums;
 using Newtonsoft.Json;
+using System;
 
 namespace GoRestClient.Models
 {

@@ -1,4 +1,4 @@
-﻿namespace GoRestClient.Models.Enums
+﻿namespace GoRestClient.Services.Models.Enums
 {
     public enum Status
     {

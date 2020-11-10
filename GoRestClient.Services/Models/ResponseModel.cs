@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 
-namespace GoRestClient.Models
+namespace GoRestClient.Services.Models
 {
     public class ResponseModel
     {
