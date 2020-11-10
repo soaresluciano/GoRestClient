@@ -10,12 +10,15 @@ namespace GoRestClient.Core
     {
         private readonly HttpClient _client;
         private readonly IJsonProvider _jsonProvider;
+        private readonly IStatusManager _statusManager;
 
         public RestProvider(
             IConfigurationProvider configurationProvider,
             IJsonProvider jsonProvider,
+            IStatusManager statusManager,
             HttpClient client)
         {
+            _statusManager = statusManager;
             _jsonProvider = jsonProvider;
             _client = client;
             _client.BaseAddress = new Uri(configurationProvider.ApiUrl);
@@ -63,15 +66,32 @@ namespace GoRestClient.Core
         {
             using var request = new HttpRequestMessage(method, requestUrl);
             beforeSend?.Invoke(request);
-            return await _client.SendAsync(request);
+            
+            try
+            {
+                return await _client.SendAsync(request);
+            }
+            catch (Exception e)
+            {
+                _statusManager.ReportException("Fail to send the request.", e);
+                throw;
+            }
         }
 
         private Action<HttpRequestMessage> SetContent<TInput>(TInput content)
         {
             return request =>
             {
-                var serializedObject = _jsonProvider.Serialize(content);
-                request.Content = new StringContent(serializedObject, Encoding.UTF8, "application/json");
+                try
+                {
+                    var serializedObject = _jsonProvider.Serialize(content);
+                    request.Content = new StringContent(serializedObject, Encoding.UTF8, "application/json");
+                }
+                catch (Exception e)
+                {
+                    _statusManager.ReportException("An error occurred during the serialization of the request content.", e);
+                    throw;
+                }
             };
         }
 
@@ -79,11 +99,19 @@ namespace GoRestClient.Core
         {
             if (response.IsSuccessStatusCode)
             {
-                var responseContent = await ReadAsStringAsync(response);
-                return _jsonProvider.Deserialize<TOutput>(responseContent);
+                try
+                {
+                    var responseContent = await ReadAsStringAsync(response);
+                    return _jsonProvider.Deserialize<TOutput>(responseContent);
+                }
+                catch (Exception e)
+                {
+                    _statusManager.ReportException("An error occurred during the deserialization of the response content.", e);
+                    throw;
+                }
             }
 
-            throw new InvalidOperationException(response.ReasonPhrase);
+            throw new InvalidOperationException($"{response.StatusCode} : {response.ReasonPhrase}");
         }
 
         private async Task<string> ReadAsStringAsync(HttpResponseMessage response)

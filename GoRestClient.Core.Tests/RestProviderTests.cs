@@ -16,30 +16,34 @@ namespace GoRestClient.Core.Tests
         private const int FakeContent = 1234;
 
         private RestProvider _unitUnderTest;
-        private HttpClient _httpClient;
+        private HttpClient _fakeHttpClient;
         private FakeHttpMessageHandler _fakeHttpHandler;
-        readonly Mock<IConfigurationProvider> _mockConfigurationProvider;
-        private readonly Mock<IJsonProvider> _mockJsonProvider;
+        private readonly Mock<IConfigurationProvider> _mockConfigurationProvider;
+        private Mock<IJsonProvider> _mockJsonProvider;
+        private Mock<IStatusManager> _mockStatusManager;
 
         public RestProviderTests()
         {
             _mockConfigurationProvider = new Mock<IConfigurationProvider>();
             _mockConfigurationProvider.SetupGet(m => m.ApiUrl).Returns("http://xpto/");
             _mockConfigurationProvider.SetupGet(m => m.ApiToken).Returns("FakeToken");
-            _mockJsonProvider = new Mock<IJsonProvider>();
-            _mockJsonProvider.Setup(m => m.Deserialize<int>(It.IsAny<string>())).Returns<string>(int.Parse);
-            _mockJsonProvider.Setup(m => m.Serialize(It.IsAny<int>())).Returns<int>(r => r.ToString());
         }
 
         [SetUp]
         public void SetUp()
         {
+            _mockJsonProvider = new Mock<IJsonProvider>();
+            _mockJsonProvider.Setup(m => m.Deserialize<int>(It.IsAny<string>())).Returns<string>(int.Parse);
+            _mockJsonProvider.Setup(m => m.Serialize(It.IsAny<int>())).Returns<int>(r => r.ToString());
+            _mockStatusManager = new Mock<IStatusManager>();
+
             _fakeHttpHandler = new FakeHttpMessageHandler();
-            _httpClient = new HttpClient(_fakeHttpHandler);
+            _fakeHttpClient = new HttpClient(_fakeHttpHandler);
             _unitUnderTest = new RestProvider(
                 _mockConfigurationProvider.Object,
                 _mockJsonProvider.Object,
-                _httpClient);
+                _mockStatusManager.Object,
+                _fakeHttpClient);
         }
 
         protected static HttpResponseMessage CreateResponseMessage(HttpStatusCode status = HttpStatusCode.OK, string expectedContent = "")
@@ -77,6 +81,40 @@ namespace GoRestClient.Core.Tests
             Assert.AreEqual(FakeContent, result);
         }
 
+        protected void WhenSendRequestFails_ShouldThrowAndLog(Func<Task> task)
+        {
+            //Arrange
+            _fakeHttpHandler.NextRequestMustThrow = true;
+
+            // Act & Assert
+            Assert.ThrowsAsync<FakeRequestException>(async () => await task());
+            _mockStatusManager.Verify(m => m.ReportException(It.IsAny<string>(), It.IsAny<Exception>()));
+        }
+
+        protected void WhenDeserializationFails_ShouldThrowAndLog(Func<Task> task)
+        {
+            //Arrange
+            _mockJsonProvider
+                .Setup(m => m.Deserialize<int>(It.IsAny<string>()))
+                .Throws(new FakeJsonException());
+
+            // Act & Assert
+            Assert.ThrowsAsync<FakeJsonException>(async () => await task());
+            _mockStatusManager.Verify(m => m.ReportException(It.IsAny<string>(), It.IsAny<Exception>()));
+        }
+
+        protected void WhenSerializationFails_ShouldThrowAndLog(Func<Task> task)
+        {
+            //Arrange
+            _mockJsonProvider
+                .Setup(m => m.Serialize(It.IsAny<int>()))
+                .Throws(new FakeJsonException());
+
+            // Act & Assert
+            Assert.ThrowsAsync<FakeJsonException>(async () => await task());
+            _mockStatusManager.Verify(m => m.ReportException(It.IsAny<string>(), It.IsAny<Exception>()));
+        }
+
         [TestFixture]
         public class GetAsyncMethod : RestProviderTests
         {
@@ -97,6 +135,18 @@ namespace GoRestClient.Core.Tests
             public async Task WhenStatusCodeIsOK_ShouldReturnExpectedContentBack()
             {
                 await WhenStatusCodeIsOK_ShouldReturnExpectedContentBack(() => _unitUnderTest.GetAsync<int>(FakeResourceUrl));
+            }
+
+            [Test]
+            public void WhenSendRequestFails_ShouldThrowAndLog()
+            {
+                WhenSendRequestFails_ShouldThrowAndLog(() => _unitUnderTest.GetAsync<int>(FakeResourceUrl));
+            }
+
+            [Test]
+            public void WhenDeserializationFails_ShouldThrowAndLog()
+            {
+                WhenDeserializationFails_ShouldThrowAndLog(() => _unitUnderTest.GetAsync<int>(FakeResourceUrl));
             }
         }
 
@@ -121,6 +171,24 @@ namespace GoRestClient.Core.Tests
             {
                 await WhenStatusCodeIsOK_ShouldReturnExpectedContentBack(() => _unitUnderTest.PostAsync<int, int>(FakeResourceUrl, FakeContent));
             }
+
+            [Test]
+            public void WhenSendRequestFails_ShouldThrowAndLog()
+            {
+                WhenSendRequestFails_ShouldThrowAndLog(() => _unitUnderTest.PostAsync<int, int>(FakeResourceUrl, FakeContent));
+            }
+
+            [Test]
+            public void WhenDeserializationFails_ShouldThrowAndLog()
+            {
+                WhenDeserializationFails_ShouldThrowAndLog(() => _unitUnderTest.PostAsync<int, int>(FakeResourceUrl, FakeContent));
+            }
+
+            [Test]
+            public void WhenSerializationFails_ShouldThrowAndLog()
+            {
+                WhenSerializationFails_ShouldThrowAndLog(()=> _unitUnderTest.PostAsync<int, int>(FakeResourceUrl, FakeContent));
+            }
         }
 
         [TestFixture]
@@ -143,6 +211,24 @@ namespace GoRestClient.Core.Tests
             public async Task WhenStatusCodeIsOK_ShouldReturnExpectedContentBack()
             {
                 await WhenStatusCodeIsOK_ShouldReturnExpectedContentBack(() => _unitUnderTest.PatchAsync<int, int>(FakeResourceUrl, FakeContent));
+            }
+
+            [Test]
+            public void WhenSendRequestFails_ShouldThrowAndLog()
+            {
+                WhenSendRequestFails_ShouldThrowAndLog(() => _unitUnderTest.PatchAsync<int, int>(FakeResourceUrl, FakeContent));
+            }
+
+            [Test]
+            public void WhenDeserializationFails_ShouldThrowAndLog()
+            {
+                WhenDeserializationFails_ShouldThrowAndLog(() => _unitUnderTest.PatchAsync<int, int>(FakeResourceUrl, FakeContent));
+            }
+
+            [Test]
+            public void WhenSerializationFails_ShouldThrowAndLog()
+            {
+                WhenSerializationFails_ShouldThrowAndLog(() => _unitUnderTest.PatchAsync<int, int>(FakeResourceUrl, FakeContent));
             }
         }
 
@@ -167,13 +253,26 @@ namespace GoRestClient.Core.Tests
             {
                 await WhenStatusCodeIsOK_ShouldReturnExpectedContentBack(() => _unitUnderTest.DeleteAsync<int>(FakeResourceUrl));
             }
+
+            [Test]
+            public void WhenSendRequestFails_ShouldThrowAndLog()
+            {
+                WhenSendRequestFails_ShouldThrowAndLog(() => _unitUnderTest.DeleteAsync<int>(FakeResourceUrl));
+            }
+
+            [Test]
+            public void WhenDeserializationFails_ShouldThrowAndLog()
+            {
+                WhenDeserializationFails_ShouldThrowAndLog(() => _unitUnderTest.DeleteAsync<int>(FakeResourceUrl));
+            }
         }
     }
 
-    public class FakeHttpMessageHandler : HttpMessageHandler
+    internal class FakeHttpMessageHandler : HttpMessageHandler
     {
         public HttpResponseMessage NextResponse { get; set; }
         public HttpRequestMessage LastRequest { get; private set; }
+        public bool NextRequestMustThrow { get; set; } = false;
 
         public virtual HttpResponseMessage Send(HttpRequestMessage request)
         {
@@ -188,7 +287,18 @@ namespace GoRestClient.Core.Tests
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            if (NextRequestMustThrow) throw new FakeRequestException();
             return Task.FromResult(Send(request));
         }
+    }
+
+    internal class FakeRequestException : Exception
+    {
+        internal FakeRequestException() : base("This request was configured to fail.") { }
+    }
+
+    internal class FakeJsonException : Exception
+    {
+        internal FakeJsonException() : base("This json operation was configured to fail.") { }
     }
 }
