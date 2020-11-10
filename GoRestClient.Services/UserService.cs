@@ -36,7 +36,7 @@ namespace GoRestClient.Services
                 _restProvider.GetAsync<ResponseModel>(url);
             var searchResult = new SearchResultModel
             {
-                Pagination = response.Meta.ToObject<SearchResultModel>().Pagination,
+                Pagination = response.Meta.ToObject<SearchResultModel>()?.Pagination,
                 Records = response.Data.ToObject<IEnumerable<UserModel>>()
             };
 

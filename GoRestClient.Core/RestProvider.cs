@@ -9,11 +9,14 @@ namespace GoRestClient.Core
     public class RestProvider : IRestProvider
     {
         private readonly HttpClient _client;
+        private readonly IJsonProvider _jsonProvider;
 
         public RestProvider(
             IConfigurationProvider configurationProvider,
+            IJsonProvider jsonProvider,
             HttpClient client)
         {
+            _jsonProvider = jsonProvider;
             _client = client;
             _client.BaseAddress = new Uri(configurationProvider.ApiUrl);
             _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {configurationProvider.ApiToken}");
@@ -67,7 +70,7 @@ namespace GoRestClient.Core
         {
             return request =>
             {
-                var serializedObject = JsonUtils.Serialize(content);
+                var serializedObject = _jsonProvider.Serialize(content);
                 request.Content = new StringContent(serializedObject, Encoding.UTF8, "application/json");
             };
         }
@@ -77,10 +80,10 @@ namespace GoRestClient.Core
             if (response.IsSuccessStatusCode)
             {
                 var responseContent = await ReadAsStringAsync(response);
-                return JsonUtils.Deserialize<TOutput>(responseContent);
+                return _jsonProvider.Deserialize<TOutput>(responseContent);
             }
 
-            throw new InvalidOperationException();
+            throw new InvalidOperationException(response.ReasonPhrase);
         }
 
         private async Task<string> ReadAsStringAsync(HttpResponseMessage response)

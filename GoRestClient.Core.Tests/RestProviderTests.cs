@@ -18,13 +18,17 @@ namespace GoRestClient.Core.Tests
         private RestProvider _unitUnderTest;
         private HttpClient _httpClient;
         private FakeHttpMessageHandler _fakeHttpHandler;
-        readonly Mock<IConfigurationProvider> _configurationProviderMock;
+        readonly Mock<IConfigurationProvider> _mockConfigurationProvider;
+        private readonly Mock<IJsonProvider> _mockJsonProvider;
 
         public RestProviderTests()
         {
-            _configurationProviderMock = new Mock<IConfigurationProvider>();
-            _configurationProviderMock.SetupGet(m => m.ApiUrl).Returns("http://xpto/");
-            _configurationProviderMock.SetupGet(m => m.ApiToken).Returns("FakeToken");
+            _mockConfigurationProvider = new Mock<IConfigurationProvider>();
+            _mockConfigurationProvider.SetupGet(m => m.ApiUrl).Returns("http://xpto/");
+            _mockConfigurationProvider.SetupGet(m => m.ApiToken).Returns("FakeToken");
+            _mockJsonProvider = new Mock<IJsonProvider>();
+            _mockJsonProvider.Setup(m => m.Deserialize<int>(It.IsAny<string>())).Returns<string>(int.Parse);
+            _mockJsonProvider.Setup(m => m.Serialize(It.IsAny<int>())).Returns<int>(r => r.ToString());
         }
 
         [SetUp]
@@ -32,7 +36,10 @@ namespace GoRestClient.Core.Tests
         {
             _fakeHttpHandler = new FakeHttpMessageHandler();
             _httpClient = new HttpClient(_fakeHttpHandler);
-            _unitUnderTest = new RestProvider(_configurationProviderMock.Object, _httpClient);
+            _unitUnderTest = new RestProvider(
+                _mockConfigurationProvider.Object,
+                _mockJsonProvider.Object,
+                _httpClient);
         }
 
         protected static HttpResponseMessage CreateResponseMessage(HttpStatusCode status = HttpStatusCode.OK, string expectedContent = "")
