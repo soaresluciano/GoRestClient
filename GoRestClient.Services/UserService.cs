@@ -31,6 +31,8 @@ namespace GoRestClient.Services
         ///<inheritdoc/>
         public async Task<SearchResultModel> Search(string nameFilter, uint page)
         {
+            if (page == 0) throw new ArgumentException("Page cannot be 0.");
+
             try
             {
                 var parameters = new StringBuilder("?");
@@ -42,8 +44,8 @@ namespace GoRestClient.Services
                     _restProvider.GetAsync<ResponseModel>(url);
                 var searchResult = new SearchResultModel
                 {
-                    Pagination = response.Meta.ToObject<SearchResultModel>()?.Pagination,
-                    Records = response.Data.ToObject<IEnumerable<UserModel>>()
+                    Pagination = response.Meta?.ToObject<SearchResultModel>()?.Pagination,
+                    Records = response.Data?.ToObject<IEnumerable<UserModel>>()
                 };
 
                 return searchResult;
@@ -62,7 +64,7 @@ namespace GoRestClient.Services
             {
                 var response = await
                     _restProvider.PostAsync<ResponseModel, UserModel>(ApiResourceName, userToBeCreated);
-                return response.Data.ToObject<UserModel>();
+                return response.Data?.ToObject<UserModel>();
             }
             catch (Exception e)
             {
@@ -79,7 +81,7 @@ namespace GoRestClient.Services
                 string url = $"{ApiResourceName}/{userToBeUpdated.Id}";
                 var response = await
                     _restProvider.PatchAsync<ResponseModel, UserModel>(url, userToBeUpdated);
-                return response.Data.ToObject<UserModel>();
+                return response.Data?.ToObject<UserModel>();
             }
             catch (Exception e)
             {
