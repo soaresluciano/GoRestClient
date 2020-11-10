@@ -18,7 +18,8 @@ namespace GoRestClient
                 .Register<IConfigurationProvider, ConfigurationProvider>()
                 .Register<IRestProvider, RestProvider>()
                 .Register<IUserService, UserService>()
-                .Register<IStatusManager, StatusManager>();
+                .Register<IStatusManager, StatusManager>()
+                .Register<IJsonProvider, JsonProvider>();
         }
 
         protected override Window CreateShell()

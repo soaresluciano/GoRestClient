@@ -99,30 +99,78 @@ namespace GoRestClient.ViewModels
 
         private async Task Search(uint resultPage)
         {
-            var searchResult = await _userService.Search(NameFilter, resultPage);
+            SearchResultModel searchResult;
+
+            try
+            {
+                searchResult = await _userService.Search(NameFilter, resultPage);
+            }
+            catch (Exception e)
+            {
+                _statusManager.ReportException("Failed to fetch the search results.", e);
+                UsersCollection.Clear();
+                Pagination = null;
+                ClearSelectedUser();
+                return;
+            }
+            
             UsersCollection.Clear();
             UsersCollection.AddRange(searchResult.Records);
             Pagination = searchResult.Pagination;
             ClearSelectedUser();
+            _statusManager.ReportInfo("Search results successfully fetched.");
         }
 
         private async Task Insert()
         {
-            var newUser = await _userService.Create(SelectedUser);
+            UserModel newUser;
+            try
+            {
+                newUser = await _userService.Create(SelectedUser);
+            }
+            catch (Exception e)
+            {
+                _statusManager.ReportException("Failed to create the new user record.", e);
+                return;
+            }
+            
             UsersCollection.Add(newUser);
             SelectedUser = newUser;
+            _statusManager.ReportInfo("User record successfully created.");
         }
 
         private async Task Update()
         {
-            await _userService.Update(SelectedUser);
+            UserModel updatedUser;
+            try
+            {
+                updatedUser = await _userService.Update(SelectedUser);
+            }
+            catch (Exception e)
+            {
+                _statusManager.ReportException("Failed to update the user information.", e);
+                return;
+            }
+
+            SelectedUser = updatedUser;
+            _statusManager.ReportInfo("User record successfully updated.");
         }
 
         private async Task Delete()
         {
-            await _userService.Delete(SelectedUser.Id);
+            try
+            {
+                await _userService.Delete(SelectedUser.Id);
+            }
+            catch (Exception e)
+            {
+                _statusManager.ReportException("Failed to delete the user.", e);
+                return;
+            }
+            
             UsersCollection.Remove(SelectedUser);
             ClearSelectedUser();
+            _statusManager.ReportInfo("User record successfully deleted.");
         }
 
         private void ClearSelectedUser() => SelectedUser = new UserModel();
