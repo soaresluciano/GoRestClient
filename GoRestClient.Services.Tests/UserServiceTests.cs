@@ -183,7 +183,6 @@ namespace GoRestClient.Services.Tests
             _mockStatusManager.Verify(m => m.ReportException(It.IsAny<string>(), It.IsAny<FakeRestException>()));
         }
 
-        //*
         [Test]
         public async Task Delete_WhenSpecificIdIsProvided_ShouldIncludeItIntoTheUrl()
         {

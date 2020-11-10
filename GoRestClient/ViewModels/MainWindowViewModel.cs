@@ -108,17 +108,21 @@ namespace GoRestClient.ViewModels
             catch (Exception e)
             {
                 _statusManager.ReportException("Failed to fetch the search results.", e);
-                UsersCollection.Clear();
-                Pagination = null;
-                ClearSelectedUser();
+                RefreshRecords(null, null);
                 return;
             }
             
-            UsersCollection.Clear();
-            UsersCollection.AddRange(searchResult.Records);
-            Pagination = searchResult.Pagination;
-            ClearSelectedUser();
+            RefreshRecords(searchResult.Records, searchResult.Pagination);
             _statusManager.ReportInfo("Search results successfully fetched.");
+        }
+
+        private void RefreshRecords(IEnumerable<UserModel> records, PaginationModel pagination)
+        {
+            Pagination = pagination;
+            UsersCollection.Clear();
+            if (records != null) 
+                UsersCollection.AddRange(records);
+            ClearSelectedUser();
         }
 
         private async Task Insert()

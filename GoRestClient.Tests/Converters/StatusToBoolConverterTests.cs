@@ -1,5 +1,5 @@
 using GoRestClient.Converters;
-using GoRestClient.Models.Enums;
+using GoRestClient.Services.Models.Enums;
 using NUnit.Framework;
 using System;
 using System.Windows;
