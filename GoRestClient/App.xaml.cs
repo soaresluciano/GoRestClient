@@ -17,7 +17,8 @@ namespace GoRestClient
             containerRegistry
                 .Register<IConfigurationProvider, ConfigurationProvider>()
                 .Register<IRestProvider, RestProvider>()
-                .Register<IUserService, UserService>();
+                .Register<IUserService, UserService>()
+                .Register<IStatusManager, StatusManager>();
         }
 
         protected override Window CreateShell()

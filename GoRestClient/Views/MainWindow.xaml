@@ -14,68 +14,73 @@
         <converters:VisibilityConverter x:Key="VisibilityConverter" />
     </Window.Resources>
     <DockPanel Margin="15">
-        <Grid MinWidth="300" Margin="15 0 0 0"
-              DockPanel.Dock="Right">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="*" />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Label Grid.ColumnSpan="2" Content="Employee Details"
-            />
-            <Label Grid.Column="0" Grid.Row="1" Content="Id"
-                   Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}"/>
-            <Label Grid.Column="1" 
-                   Grid.Row="1" 
-                   Content="{Binding SelectedUser.Id}"
-                   Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}"/>
-            
-            <Label Grid.Column="0" Grid.Row="2" Content="Status"/>
-            <CheckBox Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" 
-                      IsChecked="{Binding SelectedUser.Status, Converter={StaticResource StatusToBoolConverter}}"/>
+        <DockPanel DockPanel.Dock="Right" Margin="15 0 0 0">
+            <Grid MinWidth="300" DockPanel.Dock="Top">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Label Grid.ColumnSpan="2" Content="Employee Details"
+                />
+                <Label Grid.Column="0" Grid.Row="1" Content="Id"
+                       Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}"/>
+                <Label Grid.Column="1" 
+                       Grid.Row="1" 
+                       Content="{Binding SelectedUser.Id}"
+                       Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}"/>
+                
+                <Label Grid.Column="0" Grid.Row="2" Content="Status"/>
+                <CheckBox Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" 
+                          IsChecked="{Binding SelectedUser.Status, Converter={StaticResource StatusToBoolConverter}}"/>
 
-            <Label Grid.Column="0" Grid.Row="3" Content="Name" />
-            <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedUser.Name}"/>
+                <Label Grid.Column="0" Grid.Row="3" Content="Name" />
+                <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedUser.Name}"/>
 
-            <Label Grid.Column="0" Grid.Row="4" Content="Email"/>
-            <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding SelectedUser.Email}"/>
+                <Label Grid.Column="0" Grid.Row="4" Content="Email"/>
+                <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding SelectedUser.Email}"/>
 
-            <Label Grid.Column="0" Grid.Row="5" Content="Gender"/>
-            <ComboBox Grid.Column="1" Grid.Row="5"
-                      ItemsSource="{Binding GendersOptions}"
-                      SelectedItem="{Binding SelectedUser.Gender}"/>
+                <Label Grid.Column="0" Grid.Row="5" Content="Gender"/>
+                <ComboBox Grid.Column="1" Grid.Row="5"
+                          ItemsSource="{Binding GendersOptions}"
+                          SelectedItem="{Binding SelectedUser.Gender}"/>
 
-            <Label Grid.Column="0" Grid.Row="6" Content="Created" 
-                   Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}" />
-            <Label Grid.Column="1" Grid.Row="6" Content="{Binding SelectedUser.Created}"/>
+                <Label Grid.Column="0" Grid.Row="6" Content="Created" 
+                       Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}" />
+                <Label Grid.Column="1" Grid.Row="6" Content="{Binding SelectedUser.Created}"/>
 
-            <Label Grid.Column="0" Grid.Row="7" Content="Updated" 
-                   Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}"/>
-            <Label Grid.Column="1" Grid.Row="7" Content="{Binding SelectedUser.Updated}"/>
-            <StackPanel Grid.Column="1" Grid.Row="8">
-                <UniformGrid>
-                    <Button Content="Update" Command="{Binding UpdateCommand}" 
-                            Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}" />
-                    <Button Content="Delete" Command="{Binding DeleteCommand}" 
-                            Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}" />
-                    <Button Content="Insert" Command="{Binding InsertCommand}"
-                            Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}, ConverterParameter=true}"/>
-                </UniformGrid>
-                <Button Content="Create new" Command="{Binding CreateNewCommand}"
-                        Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}"/>
-            </StackPanel>
-        </Grid>
+                <Label Grid.Column="0" Grid.Row="7" Content="Updated" 
+                       Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}"/>
+                <Label Grid.Column="1" Grid.Row="7" Content="{Binding SelectedUser.Updated}"/>
+                <StackPanel Grid.Column="1" Grid.Row="8">
+                    <UniformGrid>
+                        <Button Content="Update" Command="{Binding UpdateCommand}" 
+                                Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}" />
+                        <Button Content="Delete" Command="{Binding DeleteCommand}" 
+                                Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}" />
+                        <Button Content="Insert" Command="{Binding InsertCommand}"
+                                Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}, ConverterParameter=true}"/>
+                    </UniformGrid>
+                    <Button Content="Create new" Command="{Binding CreateNewCommand}"
+                            Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}"/>
+                </StackPanel>
+            </Grid>
+            <DockPanel Dock="Bottom">
+                <Label Content="Status" DockPanel.Dock="Top" />
+                <ListView ItemsSource="{Binding StatusList}" />
+            </DockPanel>
+        </DockPanel>
 
         <DockPanel DockPanel.Dock="Left">
             <StackPanel DockPanel.Dock="Bottom">

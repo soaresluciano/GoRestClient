@@ -1,4 +1,5 @@
-﻿using GoRestClient.Models;
+﻿using GoRestClient.Core;
+using GoRestClient.Models;
 using GoRestClient.Services;
 using GoRestClient.Services.Models;
 using GoRestClient.Services.Models.Enums;
@@ -12,17 +13,24 @@ using System.Threading.Tasks;
 
 namespace GoRestClient.ViewModels
 {
-    public class MainWindowViewModel : BindableBase
+    public class MainWindowViewModel : BindableBase, IDisposable
     {
         private readonly IUserService _userService;
+        private readonly IStatusManager _statusManager;
         private UserModel _selectedUser;
         private ObservableCollection<UserModel> _usersCollection;
+        private ObservableCollection<string> _statusList;
         private PaginationModel _pagination;
-
-        public MainWindowViewModel(IUserService userService)
+        
+        public MainWindowViewModel(
+            IUserService userService,
+            IStatusManager statusManager)
         {
             _userService = userService;
+            _statusManager = statusManager;
+            _statusManager.OnNewStatusReceived += StatusManager_OnNewStatusReceived;
             _usersCollection = new ObservableCollection<UserModel>();
+            _statusList = new ObservableCollection<string>();
             SearchCommand = new DelegateCommand(async () => await Search(1));
             InsertCommand = new DelegateCommand(async () => await Insert());
             UpdateCommand = new DelegateCommand(async () => await Update());
@@ -43,7 +51,13 @@ namespace GoRestClient.ViewModels
 
             ClearSelectedUser();
         }
-        
+
+        public void Dispose()
+        {
+            _statusManager.OnNewStatusReceived -= StatusManager_OnNewStatusReceived;
+            GC.SuppressFinalize(this);
+        }
+
         public IEnumerable<Gender> GendersOptions => Enum.GetValues(typeof(Gender)).Cast<Gender>();
 
         public string NameFilter { get; set; }
@@ -64,6 +78,12 @@ namespace GoRestClient.ViewModels
         {
             get => _pagination;
             set => SetProperty(ref _pagination, value);
+        }
+
+        public ObservableCollection<string> StatusList
+        {
+            get => _statusList;
+            set => SetProperty(ref _statusList, value);
         }
 
         public DelegateCommand SearchCommand { get; }
@@ -110,5 +130,9 @@ namespace GoRestClient.ViewModels
         
         private bool CanExecuteGoForwardPage() => Pagination?.Page < Pagination?.Pages;
 
+        private void StatusManager_OnNewStatusReceived(object s, string statusMessage)
+        {
+            StatusList.Add(statusMessage);
+        }
     }
 }
