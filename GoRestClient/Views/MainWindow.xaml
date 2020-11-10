@@ -11,7 +11,7 @@
         Title="GoRest Client" Height="450" Width="800">
     <Window.Resources>
         <converters:StatusToBoolConverter x:Key="StatusToBoolConverter" />
-        <converters:VisibilityConverter x:Key="VisibilityConverter" />
+        <converters:IdToVisibilityConverter x:Key="VisibilityConverter" />
     </Window.Resources>
     <DockPanel Margin="15">
         <DockPanel DockPanel.Dock="Right" Margin="15 0 0 0">
