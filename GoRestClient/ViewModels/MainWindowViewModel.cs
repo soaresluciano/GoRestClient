@@ -77,11 +77,11 @@ namespace GoRestClient.ViewModels
 
         private async Task Search(uint resultPage)
         {
-            ClearSelectedUser();
             var searchResult = await _userService.Search(NameFilter, resultPage);
             UsersCollection.Clear();
             UsersCollection.AddRange(searchResult.Records);
             Pagination = searchResult.Pagination;
+            ClearSelectedUser();
         }
 
         private async Task Insert()
