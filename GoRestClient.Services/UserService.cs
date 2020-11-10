@@ -19,6 +19,11 @@ namespace GoRestClient.Services
             _restProvider = restProvider;
         }
 
+        public void Dispose()
+        {
+            _restProvider?.Dispose();
+        }
+
         ///<inheritdoc/>
         public async Task<SearchResultModel> Search(string nameFilter, uint page)
         {

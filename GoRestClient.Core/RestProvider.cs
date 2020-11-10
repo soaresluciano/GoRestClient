@@ -19,6 +19,11 @@ namespace GoRestClient.Core
             _client.DefaultRequestHeaders.Add("Authorization", $"Bearer {configurationProvider.ApiToken}");
         }
 
+        public void Dispose()
+        {
+            _client?.Dispose();
+        }
+
         ///<inheritdoc/>
         public async Task<TOutput> GetAsync<TOutput>(string requestUrl)
         {

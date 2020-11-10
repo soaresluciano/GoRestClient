@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace GoRestClient.Core
 {
     /// <summary>
     /// Provider responsible for the REST action abstractions.
     /// </summary>
-    public interface IRestProvider
+    public interface IRestProvider: IDisposable
     {
         /// <summary>
         /// Performs an async Get action on the REST service.

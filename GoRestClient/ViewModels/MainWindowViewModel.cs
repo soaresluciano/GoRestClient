@@ -55,6 +55,7 @@ namespace GoRestClient.ViewModels
         public void Dispose()
         {
             _statusManager.OnNewStatusReceived -= StatusManager_OnNewStatusReceived;
+            _userService.Dispose();
             GC.SuppressFinalize(this);
         }
 

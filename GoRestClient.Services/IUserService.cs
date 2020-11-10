@@ -1,5 +1,6 @@
 ﻿using GoRestClient.Models;
 using GoRestClient.Services.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace GoRestClient.Services
@@ -7,7 +8,7 @@ namespace GoRestClient.Services
     /// <summary>
     /// Service responsible for all the CRUD operations with the User entity.
     /// </summary>
-    public interface IUserService
+    public interface IUserService : IDisposable
     {
         /// <summary>
         /// Get the list of the users that match the given criteria.  
