@@ -1,4 +1,3 @@
-using GoRestClient.Infrastructure;
 using Moq;
 using NUnit.Framework;
 using System;
@@ -8,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace GoRestClient.Tests.Infrastructure
+namespace GoRestClient.Core.Tests
 {
     [TestFixture]
     public class RestProviderTests

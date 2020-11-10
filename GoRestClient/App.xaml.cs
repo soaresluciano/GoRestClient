@@ -1,4 +1,4 @@
-﻿using GoRestClient.Infrastructure;
+﻿using GoRestClient.Core;
 using GoRestClient.Services;
 using GoRestClient.Views;
 using Prism.Ioc;

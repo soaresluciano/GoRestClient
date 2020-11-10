@@ -1,6 +1,6 @@
-﻿using System;
-using GoRestClient.Infrastructure;
+﻿using GoRestClient.Core;
 using GoRestClient.Models;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;

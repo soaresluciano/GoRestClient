@@ -1,8 +1,8 @@
-using System;
-using System.Windows;
 using GoRestClient.Converters;
 using GoRestClient.Models.Enums;
 using NUnit.Framework;
+using System;
+using System.Windows;
 
 namespace GoRestClient.Tests.Converters
 {

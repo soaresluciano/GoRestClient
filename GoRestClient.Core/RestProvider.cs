@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GoRestClient.Infrastructure
+namespace GoRestClient.Core
 {
     /// <inheritdoc cref="IRestProvider" />
     public class RestProvider : IRestProvider

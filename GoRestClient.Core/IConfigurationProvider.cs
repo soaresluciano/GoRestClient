@@ -1,4 +1,4 @@
-﻿namespace GoRestClient.Infrastructure
+﻿namespace GoRestClient.Core
 {
     /// <summary>
     /// Provide access to the configurations of the application.

@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoRestClient", "GoRestClient\GoRestClient.csproj", "{68BF0D7D-5C0F-4201-A6A2-6927183D578F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoRestClient", "GoRestClient\GoRestClient.csproj", "{68BF0D7D-5C0F-4201-A6A2-6927183D578F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoRestClient.Tests", "GoRestClient.Tests\GoRestClient.Tests.csproj", "{0C01DC69-505B-4454-B75C-F40717546A7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoRestClient.Tests", "GoRestClient.Tests\GoRestClient.Tests.csproj", "{0C01DC69-505B-4454-B75C-F40717546A7D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoRestClient.Core", "GoRestClient.Core\GoRestClient.Core.csproj", "{09130D0F-74FF-4920-97A7-6F1449DD9856}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoRestClient.Core.Tests", "GoRestClient.Core.Tests\GoRestClient.Core.Tests.csproj", "{36948790-D7F3-4C6E-99D6-1A8BCF44CBCA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{0C01DC69-505B-4454-B75C-F40717546A7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C01DC69-505B-4454-B75C-F40717546A7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C01DC69-505B-4454-B75C-F40717546A7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09130D0F-74FF-4920-97A7-6F1449DD9856}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09130D0F-74FF-4920-97A7-6F1449DD9856}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09130D0F-74FF-4920-97A7-6F1449DD9856}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09130D0F-74FF-4920-97A7-6F1449DD9856}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36948790-D7F3-4C6E-99D6-1A8BCF44CBCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36948790-D7F3-4C6E-99D6-1A8BCF44CBCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36948790-D7F3-4C6E-99D6-1A8BCF44CBCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36948790-D7F3-4C6E-99D6-1A8BCF44CBCA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

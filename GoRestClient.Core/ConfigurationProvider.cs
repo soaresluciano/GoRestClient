@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace GoRestClient.Infrastructure
+namespace GoRestClient.Core
 {
     /// <inheritdoc cref="IConfigurationProvider" />
     public class ConfigurationProvider : IConfigurationProvider

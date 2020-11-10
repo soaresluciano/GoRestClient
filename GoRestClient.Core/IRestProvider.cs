@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace GoRestClient.Infrastructure
+namespace GoRestClient.Core
 {
     /// <summary>
     /// Provider responsible for the REST action abstractions.
