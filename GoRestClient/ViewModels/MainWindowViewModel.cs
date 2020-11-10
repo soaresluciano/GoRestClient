@@ -22,14 +22,27 @@ namespace GoRestClient.ViewModels
         {
             _userService = userService;
             _usersCollection = new ObservableCollection<UserModel>();
-            SearchCommand = new DelegateCommand(async () => await Search());
+            SearchCommand = new DelegateCommand(async () => await Search(1));
             InsertCommand = new DelegateCommand(async () => await Insert());
             UpdateCommand = new DelegateCommand(async () => await Update());
             DeleteCommand = new DelegateCommand(async () => await Delete());
             CreateNewCommand = new DelegateCommand(ClearSelectedUser);
+            FirstPageCommand =
+                new DelegateCommand(async () => await Search(1), CanExecuteGoBackPage)
+                    .ObservesProperty(() => Pagination);
+            PreviousPageCommand = 
+                new DelegateCommand(async () => await Search(--Pagination.Page), CanExecuteGoBackPage)
+                    .ObservesProperty(() => Pagination);
+            NextPageCommand = 
+                new DelegateCommand(async () => await Search(++Pagination.Page), CanExecuteGoForwardPage)
+                    .ObservesProperty(() => Pagination);
+            LastPageCommand =
+                new DelegateCommand(async () => await Search(Pagination.Pages), CanExecuteGoForwardPage)
+                    .ObservesProperty(() => Pagination);
+
             ClearSelectedUser();
         }
-
+        
         public IEnumerable<Gender> GendersOptions => Enum.GetValues(typeof(Gender)).Cast<Gender>();
 
         public string NameFilter { get; set; }
@@ -57,10 +70,15 @@ namespace GoRestClient.ViewModels
         public DelegateCommand UpdateCommand { get; }
         public DelegateCommand DeleteCommand { get; }
         public DelegateCommand CreateNewCommand { get; }
+        public DelegateCommand FirstPageCommand { get; }
+        public DelegateCommand PreviousPageCommand { get; }
+        public DelegateCommand NextPageCommand { get; }
+        public DelegateCommand LastPageCommand { get; }
 
-        private async Task Search()
+        private async Task Search(uint resultPage)
         {
-            var searchResult = await _userService.Search(NameFilter);
+            ClearSelectedUser();
+            var searchResult = await _userService.Search(NameFilter, resultPage);
             UsersCollection.Clear();
             UsersCollection.AddRange(searchResult.Records);
             Pagination = searchResult.Pagination;
@@ -85,9 +103,11 @@ namespace GoRestClient.ViewModels
             ClearSelectedUser();
         }
 
-        private void ClearSelectedUser()
-        {
-            SelectedUser = new UserModel();
-        }
+        private void ClearSelectedUser() => SelectedUser = new UserModel();
+
+        private bool CanExecuteGoBackPage() => Pagination?.Page > 1;
+        
+        private bool CanExecuteGoForwardPage() => Pagination?.Page < Pagination?.Pages;
+
     }
 }

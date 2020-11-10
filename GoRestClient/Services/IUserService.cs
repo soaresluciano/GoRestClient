@@ -13,8 +13,9 @@ namespace GoRestClient.Services
         /// Get the list of the users that match the given criteria.  
         /// </summary>
         /// <param name="nameFilter">Search criteria for the field name.</param>
+        /// <param name="page">Result page that should be retrieved.</param>
         /// <returns>List of users that match the search criteria.</returns>
-        Task<SearchResultModel> Search(string nameFilter);
+        Task<SearchResultModel> Search(string nameFilter, uint page);
         
         /// <summary>
         /// Create a new user.

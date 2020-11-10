@@ -28,7 +28,7 @@
                 <RowDefinition Height="25" />
                 <RowDefinition Height="25" />
                 <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
+                <RowDefinition Height="*" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <Label Grid.ColumnSpan="2" Content="Employee Details"
@@ -56,32 +56,50 @@
 
             <Label Grid.Column="0" Grid.Row="7" Content="Updated"/>
             <Label Grid.Column="1" Grid.Row="7" Content="{Binding SelectedUser.Updated}"/>
-            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="8">
-                <Button Content="Update" Command="{Binding UpdateCommand}" />
-                <Button Content="Delete" Command="{Binding DeleteCommand}" />
-                <Button Content="Insert" Command="{Binding InsertCommand}" />
+            <StackPanel Grid.Column="1" Grid.Row="8">
+                <UniformGrid>
+                    <Button Content="Update" Command="{Binding UpdateCommand}" />
+                    <Button Content="Delete" Command="{Binding DeleteCommand}" />
+                    <Button Content="Insert" Command="{Binding InsertCommand}" />
+                </UniformGrid>
+                <Button Content="Create new" Command="{Binding CreateNewCommand}" />
             </StackPanel>
         </Grid>
 
         <DockPanel DockPanel.Dock="Left">
             <StackPanel DockPanel.Dock="Bottom">
-                <Button Content="Create new" Command="{Binding CreateNewCommand}" />
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                        <Label Content="Filter by name:" />
+                        <TextBox Text="{Binding NameFilter}" MinWidth="200" />
+                        <Button Content="Search" Command="{Binding SearchCommand}" />
+                    </StackPanel>
+                    <TextBlock VerticalAlignment="Center" Margin="10 0">
+                        <Run Text="Records found: "/>
+                        <Run Text="{Binding Pagination.Total}"/>
+                    </TextBlock>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Button Content="&lt;&lt;" Command="{Binding FirstPageCommand}" />
+                        <Button Content="&lt;" Command="{Binding PreviousPageCommand}" />
+                        <TextBlock VerticalAlignment="Center" Margin="10 0">
+                                <Run Text="Page "/>
+                                <Run Text="{Binding Pagination.Page}"/>
+                                <Run Text="/"/>
+                                <Run Text="{Binding Pagination.Pages}"/>
+                            </TextBlock>
+                        <Button Content="&gt;" Command="{Binding NextPageCommand}"  />
+                        <Button Content="&gt;&gt;" Command="{Binding LastPageCommand}"  />
+                    </StackPanel>
+                </DockPanel>
             </StackPanel>
 
-            <DockPanel DockPanel.Dock="Top">
-                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
-                    <Label Content="Filter by name:" />
-                    <TextBox Text="{Binding NameFilter}" MinWidth="200" />
-                    <Button Content="Search" Command="{Binding SearchCommand}" />
-                </StackPanel>
-                <DataGrid
-                          SelectionMode="Single"
-                          IsReadOnly="True" 
-                          ItemsSource ="{Binding UsersCollection}"
-                          SelectedItem="{Binding SelectedUser}"
-                />
-            </DockPanel>
+            <DataGrid DockPanel.Dock="Top"
 
+                      SelectionMode="Single"
+                      IsReadOnly="True" 
+                      ItemsSource ="{Binding UsersCollection}"
+                      SelectedItem="{Binding SelectedUser}"
+            />
         </DockPanel>
     </DockPanel>
 </Window>

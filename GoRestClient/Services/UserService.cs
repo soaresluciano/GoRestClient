@@ -2,6 +2,7 @@
 using GoRestClient.Infrastructure;
 using GoRestClient.Models;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace GoRestClient.Services
@@ -18,9 +19,12 @@ namespace GoRestClient.Services
         }
 
         ///<inheritdoc/>
-        public async Task<SearchResultModel> Search(string nameFilter)
+        public async Task<SearchResultModel> Search(string nameFilter, uint page)
         {
-            string parameters = !string.IsNullOrWhiteSpace(nameFilter) ? $"?name={nameFilter}" : String.Empty;
+            var parameters = new StringBuilder("?");
+            parameters.Append($"page={page};");
+            parameters.Append(!string.IsNullOrWhiteSpace(nameFilter) ? $"name={nameFilter}" : String.Empty);
+
             string url = $"{ApiResourceName}{parameters}";
             var response = await
                 _restProvider.GetAsync<ResponseModel>(url);
