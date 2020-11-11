@@ -12,102 +12,126 @@
     <Window.Resources>
         <converters:StatusToBoolConverter x:Key="StatusToBoolConverter" />
         <converters:IdToVisibilityConverter x:Key="VisibilityConverter" />
+
+        <Style  TargetType="Button">
+            <Setter Property="Padding" Value="5" />
+        </Style>
+
+        <Style x:Key="BoldLabel" TargetType="Run">
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="Foreground" Value="#333" />
+        </Style>
+
+        <Style x:Key="FormLabel" TargetType="Label">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="FontWeight" Value="DemiBold" />
+            <Setter Property="Foreground" Value="#333" />
+        </Style>
     </Window.Resources>
     <DockPanel Margin="15">
         <DockPanel DockPanel.Dock="Right" Margin="15 0 0 0">
-            <Grid MinWidth="300" DockPanel.Dock="Top">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Label Grid.ColumnSpan="2" Content="Employee Details"
-                />
-                <Label Grid.Column="0" Grid.Row="1" Content="Id"
-                       Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}"/>
-                <Label Grid.Column="1" 
-                       Grid.Row="1" 
-                       Content="{Binding SelectedUser.Id}"
-                       Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}"/>
-                
-                <Label Grid.Column="0" Grid.Row="2" Content="Status"/>
-                <CheckBox Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" 
+            <Expander DockPanel.Dock="Top" IsExpanded="True">
+                <Expander.Header>
+                    <Label Content="Employee Details" FontWeight="DemiBold" />
+                </Expander.Header>
+                <Border MinWidth="300" Margin="0 15" BorderBrush="#ABADB3" BorderThickness="1" Padding="20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.Row="0" Content="Id" Style="{StaticResource FormLabel}"
+                           Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}"/>
+                        <Label Grid.Column="1" Grid.Row="0" Content="{Binding SelectedUser.Id}"
+                           Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}"/>
+
+                        <Label Grid.Column="0" Grid.Row="1" Content="Status" Style="{StaticResource FormLabel}"/>
+                        <CheckBox Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" 
                           IsChecked="{Binding SelectedUser.Status, Converter={StaticResource StatusToBoolConverter}}"/>
 
-                <Label Grid.Column="0" Grid.Row="3" Content="Name" />
-                <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedUser.Name}"/>
+                        <Label Grid.Column="0" Grid.Row="2" Content="Name" Style="{StaticResource FormLabel}"/>
+                        <TextBox Grid.Column="1" Grid.Row="2" Text="{Binding SelectedUser.Name}"/>
 
-                <Label Grid.Column="0" Grid.Row="4" Content="Email"/>
-                <TextBox Grid.Column="1" Grid.Row="4" Text="{Binding SelectedUser.Email}"/>
+                        <Label Grid.Column="0" Grid.Row="3" Content="Email" Style="{StaticResource FormLabel}"/>
+                        <TextBox Grid.Column="1" Grid.Row="3" Text="{Binding SelectedUser.Email}"/>
 
-                <Label Grid.Column="0" Grid.Row="5" Content="Gender"/>
-                <ComboBox Grid.Column="1" Grid.Row="5"
+                        <Label Grid.Column="0" Grid.Row="4" Content="Gender" Style="{StaticResource FormLabel}"/>
+                        <ComboBox Grid.Column="1" Grid.Row="4"
                           ItemsSource="{Binding GendersOptions}"
                           SelectedItem="{Binding SelectedUser.Gender}"/>
 
-                <Label Grid.Column="0" Grid.Row="6" Content="Created" 
+                        <Label Grid.Column="0" Grid.Row="5" Content="Created" Style="{StaticResource FormLabel}"
                        Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}" />
-                <Label Grid.Column="1" Grid.Row="6" Content="{Binding SelectedUser.Created}"/>
+                        <Label Grid.Column="1" Grid.Row="5" Content="{Binding SelectedUser.Created}"/>
 
-                <Label Grid.Column="0" Grid.Row="7" Content="Updated" 
+                        <Label Grid.Column="0" Grid.Row="6" Content="Updated" Style="{StaticResource FormLabel}"
                        Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}"/>
-                <Label Grid.Column="1" Grid.Row="7" Content="{Binding SelectedUser.Updated}"/>
-                <StackPanel Grid.Column="1" Grid.Row="8">
-                    <UniformGrid>
-                        <Button Content="Update" Command="{Binding UpdateCommand}" 
+                        <Label Grid.Column="1" Grid.Row="6" Content="{Binding SelectedUser.Updated}"/>
+                        <StackPanel Grid.Column="1" Grid.Row="7">
+                            <UniformGrid>
+                                <Button Content="Update" Command="{Binding UpdateCommand}" 
                                 Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}" />
-                        <Button Content="Delete" Command="{Binding DeleteCommand}" 
+                                <Button Content="Delete" Command="{Binding DeleteCommand}" 
                                 Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}" />
-                        <Button Content="Insert" Command="{Binding InsertCommand}"
+                                <Button Content="Insert" Command="{Binding InsertCommand}"
                                 Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}, ConverterParameter=true}"/>
-                    </UniformGrid>
-                    <Button Content="Create new" Command="{Binding CreateNewCommand}"
+                            </UniformGrid>
+                            <Button Content="Create new" Command="{Binding CreateNewCommand}"
                             Visibility="{Binding SelectedUser.Id, Converter={StaticResource VisibilityConverter}}"/>
-                </StackPanel>
-            </Grid>
-            <DockPanel Dock="Bottom">
-                <Label Content="Status" DockPanel.Dock="Top" />
-                <ListView ItemsSource="{Binding StatusList}" />
-            </DockPanel>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Expander>
+
+            <Expander DockPanel.Dock="Bottom" IsExpanded="True">
+                <Expander.Header>
+                    <Label Content="Status" FontWeight="DemiBold" />
+                </Expander.Header>
+                <ListView ItemsSource="{Binding StatusList}" Margin="0 15 0 0" />
+            </Expander>
         </DockPanel>
 
         <DockPanel DockPanel.Dock="Left">
-            <StackPanel DockPanel.Dock="Bottom">
+            <Border Background="#F0f0f0" 
+                    BorderBrush="#688CAF"
+                    BorderThickness="1" 
+                    DockPanel.Dock="Bottom" 
+                    Margin="0 10 0 0" 
+                    Padding="7">
                 <DockPanel>
                     <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                        <Label Content="Filter by name:" />
+                        <Label Content="Filter by name:" Style="{StaticResource FormLabel}" />
                         <TextBox Text="{Binding NameFilter}" MinWidth="200" />
                         <Button Content="Search" Command="{Binding SearchCommand}" />
                     </StackPanel>
                     <TextBlock VerticalAlignment="Center" Margin="10 0">
-                        <Run Text="Records found: "/>
+                        <Run Text="Records found: " Style="{StaticResource BoldLabel}" />
                         <Run Text="{Binding Pagination.Total}"/>
                     </TextBlock>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Button Content="&lt;&lt;" Command="{Binding FirstPageCommand}" />
                         <Button Content="&lt;" Command="{Binding PreviousPageCommand}" />
                         <TextBlock VerticalAlignment="Center" Margin="10 0">
-                                <Run Text="Page "/>
+                                <Run Text="Page " Style="{StaticResource BoldLabel}"/>
                                 <Run Text="{Binding Pagination.Page}"/>
-                                <Run Text="/"/>
+                                <Run Text="/" />
                                 <Run Text="{Binding Pagination.Pages}"/>
                             </TextBlock>
                         <Button Content="&gt;" Command="{Binding NextPageCommand}"  />
                         <Button Content="&gt;&gt;" Command="{Binding LastPageCommand}"  />
                     </StackPanel>
                 </DockPanel>
-            </StackPanel>
+            </Border>
 
             <DataGrid DockPanel.Dock="Top"
                       SelectionMode="Single"
